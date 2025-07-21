@@ -1,0 +1,8 @@
+<!-- payment_cancel.html -->
+{% extends "appcom/base.html" %}
+{% block content %}
+  <div class="alert alert-warning">Payment canceled. Please try again.</div>
+    <a class="btn btn-primary mt-3" href="{% url 'home' %}">
+    <i class="fas fa-home"></i> Go to Home
+  </a>
+{% endblock %}

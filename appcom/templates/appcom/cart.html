@@ -1,0 +1,264 @@
+
+
+{% extends "appcom/base.html" %}
+{% load static %}
+
+{% block title %}Your Cart - LuxeCart{% endblock %}
+
+{% block extra_css %}
+<style>
+    body {
+        background-color: #f4f7fc;
+    }
+
+    .cart-header {
+        border-bottom: 2px solid var(--accent-color);
+        padding-bottom: 15px;
+        margin-bottom: 30px;
+    }
+
+    .cart-item {
+        background: #fdfdfd;
+        border-radius: 12px;
+        box-shadow: var(--shadow-sm);
+        margin-bottom: 20px;
+        overflow: hidden;
+        transition: var(--transition);
+    }
+
+    .cart-item:hover {
+        box-shadow: var(--shadow-md);
+    }
+
+    .cart-item-img {
+        width: 100px;
+        height: 100px;
+        object-fit: cover;
+        border-radius: 8px;
+    }
+
+    .product-title {
+        font-weight: 600;
+        margin-bottom: 5px;
+    }
+
+    .product-date {
+        font-size: 0.8rem;
+        color: var(--text-light);
+    }
+
+    .quantity-controls {
+        display: flex;
+        align-items: center;
+    }
+
+    .quantity-btn {
+        width: 30px;
+        height: 30px;
+        border: 1px solid #ddd;
+        background: #fafafa;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: var(--transition);
+    }
+
+    .quantity-btn:hover {
+        background: #f0f0f0;
+    }
+
+    .quantity-value {
+        width: 40px;
+        text-align: center;
+        border-top: 1px solid #ddd;
+        border-bottom: 1px solid #ddd;
+        height: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .price-label {
+        font-size: 0.8rem;
+        color: var(--text-light);
+    }
+
+    .price-value {
+        font-weight: 600;
+    }
+
+    .subtotal {
+        color: var(--accent-color);
+        font-weight: 700;
+    }
+
+    .cart-summary {
+        background: #fdfdfd;
+        border-radius: 12px;
+        box-shadow: var(--shadow-sm);
+        padding: 25px;
+    }
+
+    .summary-title {
+        border-bottom: 1px solid #eee;
+        padding-bottom: 15px;
+        margin-bottom: 20px;
+    }
+
+    .summary-row {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 10px;
+    }
+
+    .total-row {
+        font-size: 1.2rem;
+        font-weight: 600;
+        margin-top: 20px;
+        padding-top: 15px;
+        border-top: 1px solid #eee;
+    }
+
+    .empty-cart {
+        text-align: center;
+        padding: 60px 0;
+    }
+
+    .empty-cart i {
+        font-size: 4rem;
+        color: var(--accent-color);
+        margin-bottom: 20px;
+    }
+
+    .btn-checkout {
+        width: 100%;
+        padding: 12px;
+        font-weight: 600;
+        letter-spacing: 1px;
+    }
+
+    .btn-continue {
+        border: 1px solid var(--primary-color);
+        color: var(--primary-color);
+    }
+
+    .btn-continue:hover {
+        background-color: var(--primary-color);
+        color: white;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="cart-header slide-up">
+                <h2><i class="fas fa-shopping-bag me-2"></i>Your Shopping Bag</h2>
+                <p class="text-muted">Review your items before checkout</p>
+            </div>
+
+            {% if orders %}
+                {% for order in orders %}
+                <div class="cart-item slide-up" style="animation-delay: {{ forloop.counter0|divisibleby:2|yesno:'0.1s,0.2s' }}">
+                    <div class="p-4 d-flex flex-column flex-md-row align-items-center">
+                        <div class="d-flex align-items-center mb-3 mb-md-0 me-md-4">
+                            <img src="{{ order.product.image.url }}" alt="{{ order.product.name }}" 
+                                 class="cart-item-img me-3">
+                            <div>
+                                <h5 class="product-title">{{ order.product.name }}</h5>
+                                <div class="product-date">{{ order.created_at|date:"M d, Y" }}</div>
+                            </div>
+                        </div>
+
+                        <div class="ms-md-auto d-flex flex-column flex-md-row align-items-center">
+                            <div class="me-md-4 mb-3 mb-md-0">
+                                <div class="price-label">Quantity</div>
+                                <form method="post" action="{% url 'update_quantity' order.id %}" class="quantity-controls">
+                                    {% csrf_token %}
+                                    <button type="submit" name="action" value="dec" class="quantity-btn">−</button>
+                                    <span class="quantity-value">{{ order.quantity }}</span>
+                                    <button type="submit" name="action" value="inc" class="quantity-btn">+</button>
+                                </form>
+                            </div>
+
+                            <div class="me-md-4 mb-3 mb-md-0 text-center text-md-start">
+                                <div class="price-label">Price</div>
+                                <div class="price-value">₹{{ order.product.price|floatformat:2 }}</div>
+                            </div>
+
+                            <div class="text-center text-md-start">
+                                <div class="price-label">Subtotal</div>
+                                <div class="subtotal">₹{{ order.pro_price|floatformat:2 }}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="empty-cart fade-in">
+                    <i class="fas fa-shopping-bag"></i>
+                    <h3>Your Bag is Empty</h3>
+                    <p class="text-muted mb-4">Start shopping to add items to your cart</p>
+                    <a href="{% url 'home' %}" class="btn btn-primary">Continue Shopping</a>
+                </div>
+            {% endif %}
+        </div>
+
+        {% if orders %}
+        <div class="col-lg-4 mt-4 mt-lg-0">
+            <div class="cart-summary slide-up" style="animation-delay: 0.3s">
+                <h4 class="summary-title">Order Summary</h4>
+                
+                <div class="summary-row">
+                    <span>Subtotal</span>
+                    <span>₹{{ total|floatformat:2 }}</span>
+                </div>
+                <div class="summary-row">
+                    <span>Shipping</span>
+                    <span>Free</span>
+                </div>
+                <div class="summary-row">
+                    <span>Tax</span>
+                    <span>Calculated at checkout</span>
+                </div>
+                
+                <div class="summary-row total-row">
+                    <span>Total</span>
+                    <span class="subtotal">₹{{ total|floatformat:2 }}</span>
+                </div>
+
+                <a href="{% url 'address' %}" class="btn btn-primary btn-checkout mt-3">
+                    Proceed to Checkout
+                </a>
+                <a href="{% url 'home' %}" class="btn btn-continue mt-2">
+                    Continue Shopping
+                </a>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+{% if orders %}
+<section class="bg-light py-4 mt-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-auto text-center mx-3">
+                <i class="fas fa-shield-alt fa-2x text-primary mb-2"></i>
+                <p class="small mb-0">Secure Checkout</p>
+            </div>
+            <div class="col-auto text-center mx-3">
+                <i class="fas fa-truck fa-2x text-primary mb-2"></i>
+                <p class="small mb-0">Free Shipping</p>
+            </div>
+            <div class="col-auto text-center mx-3">
+                <i class="fas fa-undo fa-2x text-primary mb-2"></i>
+                <p class="small mb-0">Easy Returns</p>
+            </div>
+        </div>
+    </div>
+</section>
+{% endif %}
+{% endblock %}

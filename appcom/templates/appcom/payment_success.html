@@ -1,0 +1,12 @@
+<!-- payment_success.html -->
+{% extends "appcom/base.html" %}
+
+{% block content %}
+  <div class="alert alert-success mt-4">
+    Payment successful! Your order has been confirmed.
+  </div>
+
+  <a class="btn btn-primary mt-3" href="{% url 'home' %}">
+    <i class="fas fa-home"></i> Go to Home
+  </a>
+{% endblock %}

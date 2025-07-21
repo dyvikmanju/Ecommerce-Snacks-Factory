@@ -1,0 +1,75 @@
+{% extends "appcom/base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Select Address</h2>
+
+    <!-- Add Address Button -->
+    <button class="btn btn-outline-primary mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#addAddressForm">
+        <i class="fas fa-plus"></i> Add New Address
+    </button>
+
+    <!-- Add Address Form -->
+    <div class="collapse" id="addAddressForm">
+        <form method="post">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label for="address">Address:</label>
+                <textarea class="form-control" id="address" name="address" rows="3" required></textarea>
+            </div>
+            <div class="mb-3">
+                <label for="city">City:</label>
+                <input class="form-control" type="text" id="city" name="city" required>
+            </div>
+            <div class="mb-3">
+                <label for="state">State:</label>
+                <input class="form-control" type="text" id="state" name="state" required>
+            </div>
+            <div class="mb-3">
+                <label for="zip_code">Zip Code:</label>
+                <input class="form-control" type="text" id="zip_code" name="zip_code" required>
+            </div>
+            <button type="submit" name="add_address" class="btn btn-success">Save Address</button>
+        </form>
+    </div>
+
+    <hr class="my-4">
+
+    <!-- Show Existing Addresses -->
+    {% if addresses %}
+        <div class="row g-4">
+            {% for address in addresses %}
+            <div class="col-md-6">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title">Address #{{ forloop.counter }}</h5>
+                        <p class="card-text">{{ address.address }}, {{ address.city }}, {{ address.state }} - {{ address.zip_code }}</p>
+                        
+                        <!-- Show Linked Orders -->
+
+
+                        <!-- Confirm Button -->
+                        <form method="post">
+                            {% csrf_token %}
+                            <button type="submit" name="confirm_address" value="{{ address.id }}" class="btn btn-primary mt-3">
+                                Confirm to this Address
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="text-muted">No addresses found. Please add a new address.</p>
+    {% endif %}
+
+    <!-- Back to Cart -->
+    <div class="mt-4">
+        <a href="{% url 'cart' %}" class="btn btn-secondary">← Back to Cart</a>
+    </div>
+</div>
+{% endblock %}
+
+
