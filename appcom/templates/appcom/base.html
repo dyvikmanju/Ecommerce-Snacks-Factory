@@ -331,7 +331,7 @@
                         <ul class="dropdown-menu dropdown-menu-end shadow-sm">
                             <li><a class="dropdown-item" href="#"><i class="fas fa-user-circle me-2"></i> My Profile</a></li>
                             <li><a class="dropdown-item" href="#"><i class="fas fa-heart me-2"></i> Favorites</a></li>
-                            <li><a class="dropdown-item" href="#"><i class="fas fa-shopping-bag me-2"></i> My Orders</a></li>
+                            <li><a class="dropdown-item" href="{% url 'confirmed-orders' %}"><i class="fas fa-shopping-bag me-2"></i> My Orders</a></li>
                             <li><hr class="dropdown-divider"></li>
                             <li>
                                 <form method="POST" action="{% url 'logout' %}" class="d-inline">

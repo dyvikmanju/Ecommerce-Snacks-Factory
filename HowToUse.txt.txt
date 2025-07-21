@@ -1,0 +1,100 @@
+Before u use, u need to connect project to database and u need to migrate tables and should have at least one superuser
+
+
+🧑‍🍳 How to Use the App as a User (Customer)
+
+1. Login/Register:
+
+Login using your correct Gmail account.
+
+If you're a new user, register first.
+
+
+
+2. Choose Your Taste Preference:
+
+Select your desired taste category:
+👉 Salty, Sweet, or Spicy.
+
+
+
+3. Place Your Order:
+
+Browse the items and add to cart.
+
+You can increment or decrement the quantity of each item in your cart.
+
+
+
+4. Enter Delivery Address:
+
+Type your delivery address.
+
+Confirm the address before proceeding.
+
+
+
+5. Payment (Test Mode):
+
+Use the Stripe test card number:
+4242 4242 4242 4242
+
+Any valid future date and CVC code will work.
+
+Complete the payment.
+
+
+
+6. Check Your Orders:
+
+Go to Home > My Orders.
+
+Your order status will be shown as Pending.
+
+
+
+7. Logout:
+
+After placing the order, logout from your customer account.
+
+
+
+
+
+---
+
+👨‍💼 How to Operate as Admin (Staff/Superuser)
+
+1. Login as Admin:
+
+Use a superuser or staff account to log in.
+
+
+
+2. Manage Orders:
+
+Go to the URL:
+/adminorders
+
+You’ll see all pending orders.
+
+After delivery, mark the orders as Delivered.
+
+
+
+
+
+---
+
+🔐 Forgot Password?
+
+If you forget your password:
+
+A reset password link will be sent to your registered Gmail.
+
+The email will come from:
+📧 scamprohibition@gmail.com
+
+
+
+
